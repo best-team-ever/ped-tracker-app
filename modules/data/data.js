@@ -6,6 +6,7 @@ export const datatill = [
       numks: "1",
       serial: "#453-231",
       state:'OK',
+      message:""
     },
     content:
     {

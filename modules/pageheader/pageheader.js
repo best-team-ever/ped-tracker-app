@@ -1,6 +1,19 @@
 import React from 'react';
-import { StyleSheet, Text, View, StatusBar, Picker } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, Picker, BackHandler, Alert } from 'react-native';
 import { Header, Icon, Body, Left, Right } from "native-base";
+// import RNExitApp from 'react-native-exit-app';
+
+function quitApp() {
+    Alert.alert(
+  'Quitter l\'application ?',
+  '',
+  [
+  {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+  {text: 'OK', onPress: () => BackHandler.exitApp()},
+  ],
+  { cancelable: false }
+  )
+}
 
 export default class PageHeader extends React.Component {
   render() {
@@ -22,8 +35,9 @@ export default class PageHeader extends React.Component {
             type="Entypo"
             name="log-out"
             style={{fontSize: 30, color: 'white'}}
-            onPress={() => this.state.navigation.openDrawer()}
-          />
+            onPress={() => quitApp()}
+          />{
+          }
         </Right>
         </Header>
     )

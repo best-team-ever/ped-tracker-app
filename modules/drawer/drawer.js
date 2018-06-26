@@ -1,10 +1,10 @@
 import React from 'react';
 import {createDrawerNavigator} from 'react-navigation';
-import Main from './../main/main.js';
 // import { Icon } from 'react-native-elements';
 import { Icon } from "native-base";
 import TabNav from './../tabnav/tabnav.js';
 import { Text, View } from 'react-native';
+
 
 const Drawer = createDrawerNavigator({
 
@@ -60,6 +60,5 @@ const Drawer = createDrawerNavigator({
   headerTitle: 'Main Screen Header',
 
 });
-
 
 export default Drawer;
