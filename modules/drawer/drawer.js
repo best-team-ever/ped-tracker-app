@@ -1,25 +1,35 @@
 import React from 'react';
-import {createDrawerNavigator} from 'react-navigation';
+import {createDrawerNavigator, createStackNavigator} from 'react-navigation';
 // import { Icon } from 'react-native-elements';
 import { Icon } from "native-base";
 import TabNav from './../tabnav/tabnav.js';
 import { Text, View } from 'react-native';
-
-
+import Tills from './../tills/tills.js';
+import Tpe from './../tpe/tpe.js';
+import modiftpe from './../modiftpe/modiftpe.js';
 const Drawer = createDrawerNavigator({
 
-  Main: {
-    screen: TabNav,
+  Tpe:createStackNavigator({
+        Home: {
+              screen: Tpe,
+              },
+        modiftpe: modiftpe,
+      },{
+      headerMode:'none',
+      }),
+
+  // Tpe: {
+  //   screen: Tpe,
+  //   navigationOptions: {
+  //     drawerLabel: 'Mes TPE',
+  //     drawerIcon:() => <Icon type="FontAwesome" name="credit-card-alt" style={{fontSize:22, color:"#666666"}} />,
+  //   }
+  // },
+  Tills: {
+    screen: Tills,
     navigationOptions: {
       drawerLabel: 'Mes caisses',
       drawerIcon:()=><Icon type="FontAwesome" name="desktop" style={{fontSize:22, color:"#666666"}}/>,
-    }
-  },
-  TPE: {
-    screen: TabNav,
-    navigationOptions: {
-      drawerLabel: 'Mes TPE',
-      drawerIcon:() => <Icon type="FontAwesome" name="credit-card-alt" style={{fontSize:22, color:"#666666"}} />,
     }
   },
   DASH: {
@@ -54,7 +64,7 @@ const Drawer = createDrawerNavigator({
 }, {
   drawerWidth: 180,
   drawerBackgroundColor : '#FFF',
-  initialRouteName : 'Main',
+  initialRouteName : 'Tpe',
   headerMode: 'screen',
 
   headerTitle: 'Main Screen Header',

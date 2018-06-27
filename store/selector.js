@@ -3,5 +3,7 @@ export function mapStateToProps(state) {
     loggedIn:state.loggedIn,
     emailUser:state.emailUser,
     datatill:state.datatill,
+    listDevices:state.listDevices,
+    storeUser:state.storeUser,
    }
 }

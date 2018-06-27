@@ -21,10 +21,10 @@ class ShowTill extends Component {
   }
 
   renderStatusIcon = (status) => {
-    if (status === "Active") {
+    if (status === "active") {
       return <Icon style={{ fontSize: 18, color:"green" }} name="check" type="FontAwesome" />
     }
-    if (status === "warning") {
+    if (status === "maintenance") {
       return <Icon style={{ fontSize: 18, color:"orange" }} name="warning" type="FontAwesome" />
     }
     else {
@@ -119,86 +119,10 @@ class AccordionTills extends Component {
   // axios.get(`http://192.168.38.58:8000/api/devices`)
   axios.get(`https://ped-tracker.herokuapp.com/api/devices`)
   //.then((response) => console.log(response))
-  .then((response) => this.setState({listDevices: response.data}))
+    .then((response) => this.props.initialState(response.data))
+  // .then((response) => this.setState({listDevices: response.data}))
 }
 
-  _renderIcon = (status) => {
-    if (status === "OK") {
-      return <Icon style={{ fontSize: 18, color:"green" }} name="check" type="FontAwesome" />
-    }
-    if (status === "WARNING") {
-      return <Icon style={{ fontSize: 18, color:"orange" }} name="warning" type="FontAwesome" />
-    }
-    else {
-      return <Icon style={{ fontSize: 18, color:"red" }} name="close" type="FontAwesome" />
-    }
-  }
-
-  _renderHeader = (title) => {
-    return (
-      <View
-        style={styles.header}
-      >
-        <Text style={styles.title}>
-          Caisse {title.numks}
-        </Text>
-        <Text>
-          {title.serial}
-        </Text>
-        {this._renderIcon(title.state)}
-
-        <Icon style={{ fontSize: 12 }} name="chevron-down" type="FontAwesome" />
-      </View>
-    );
-  }
-
-  _renderContent = (content) => {
-    return (
-      <View style={styles.content}>
-        <View style={{
-          backgroundColor: "#e3f1f1",
-          padding: 10,
-          width:"100%",
-          marginBottom:10,
-        }}>
-          <Text>Modèle : {content.model}</Text>
-          <Text>Marque : {content.brand}</Text>
-          <Text>Etat : {content.status}</Text>
-          <Text>N° de série : {content.serial}</Text>
-          <Text>Dernier inventaire : {content.lastinventory}</Text>
-        </View>
-        <Button
-          light
-          icon={{name: 'check-square-o', type: 'font-awesome'}}
-          buttonStyle={{
-            backgroundColor: "rgba(72, 167,74, 1)",
-            borderColor: "transparent",
-            borderWidth: 0,
-            borderRadius: 5,
-            width: 120,
-            height: 40,
-            margin: 5,
-          }}
-          title='Confirmer'
-          onPress={() => this.props.confirmTpe(content.serial)}
-        />
-        <Button
-          light
-          icon={{name: 'edit', type: 'font-awesome'}}
-          buttonStyle={{
-            backgroundColor: "rgba(92, 99,216, 1)",
-            borderColor: "transparent",
-            borderWidth: 0,
-            borderRadius: 5,
-            width: 100,
-            height: 40,
-            margin:5,
-
-          }}
-          title='Modifier' />
-      </View>
-    );
-  }
 
   showTpe() {
     if (this.state.listDevices !== []) {
@@ -210,7 +134,7 @@ class AccordionTills extends Component {
   }
 
   render() {
-    //console.log("props :",this.state.listDevices)
+    console.log("*** props :",this.props)
     return (
       <View style={styles.container}>
 
