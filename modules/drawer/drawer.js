@@ -5,18 +5,12 @@ import { Icon } from "native-base";
 import TabNav from './../tabnav/tabnav.js';
 import { Text, View } from 'react-native';
 import Tills from './../tills/tills.js';
+import Listtills from './../listtills/listtills.js';
 import Tpe from './../tpe/tpe.js';
+import histotpe from './../histotpe/histotpe.js';
 import modiftpe from './../modiftpe/modiftpe.js';
+import histouser from './../histouser/histouser.js';
 const Drawer = createDrawerNavigator({
-
-  Tpe:createStackNavigator({
-        Home: {
-              screen: Tpe,
-              },
-        modiftpe: modiftpe,
-      },{
-      headerMode:'none',
-      }),
 
   // Tpe: {
   //   screen: Tpe,
@@ -25,22 +19,41 @@ const Drawer = createDrawerNavigator({
   //     drawerIcon:() => <Icon type="FontAwesome" name="credit-card-alt" style={{fontSize:22, color:"#666666"}} />,
   //   }
   // },
+  Tpe: {
+    screen: createStackNavigator({
+          Home: {
+                screen: Tpe,
+                },
+          modiftpe: modiftpe,
+          histotpe: histotpe,
+        },{
+        headerMode:'none',
+        navigationOptions: {
+          drawerLabel: 'Mes tpe',
+          drawerIcon:()=><Icon type="FontAwesome" name="desktop" style={{fontSize:22, color:"#666666"}}/>,
+        }
+        }),
+    navigationOptions: {
+      drawerLabel: 'Mes TPE',
+      drawerIcon:()=><Icon type="FontAwesome" name="credit-card-alt" style={{fontSize:22, color:"#666666"}}/>,
+    }
+  },
   Tills: {
-    screen: Tills,
+    screen: Listtills,
     navigationOptions: {
       drawerLabel: 'Mes caisses',
       drawerIcon:()=><Icon type="FontAwesome" name="desktop" style={{fontSize:22, color:"#666666"}}/>,
     }
   },
-  DASH: {
-    screen: TabNav,
-    navigationOptions: {
-      drawerLabel: 'Dashboard',
-      drawerIcon:() => <Icon type="FontAwesome" name="dashboard" style={{fontSize:22, color:"#666666"}} />,
-    }
-  },
+  // DASH: {
+  //   screen: TabNav,
+  //   navigationOptions: {
+  //     drawerLabel: 'Dashboard',
+  //     drawerIcon:() => <Icon type="FontAwesome" name="dashboard" style={{fontSize:22, color:"#666666"}} />,
+  //   }
+  // },
   HISTO: {
-    screen: TabNav,
+    screen: histouser,
     navigationOptions: {
       drawerLabel: 'Historique',
       drawerIcon:() => <Icon type="FontAwesome" name="history" style={{fontSize:22, color:"#666666"}} />,

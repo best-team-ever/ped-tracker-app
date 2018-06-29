@@ -5,5 +5,6 @@ export function mapStateToProps(state) {
     datatill:state.datatill,
     listDevices:state.listDevices,
     storeUser:state.storeUser,
+    userId:state.userId,
    }
 }

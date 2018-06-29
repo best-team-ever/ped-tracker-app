@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, StatusBar, Picker, BackHandler, Alert } from 'react-native';
 import { Header, Icon, Body, Left, Right } from "native-base";
-// import RNExitApp from 'react-native-exit-app';
 
 function quitApp() {
     Alert.alert(

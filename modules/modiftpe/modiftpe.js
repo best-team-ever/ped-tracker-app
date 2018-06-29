@@ -9,8 +9,6 @@ import {mapDispatchToProps} from "./../../store/handlers.js";
 class ShowForm extends React.Component {
       constructor(props){
         super(props)
-
-        console.log("****",this.props.tpe);
         this.state = {
           selectvalue : this.props.tpe.status,
           till_label:this.props.tpe.till_label,
@@ -22,7 +20,10 @@ class ShowForm extends React.Component {
       }
 
       updateTpe(tpe) {
-          const newTpe={...tpe,status:this.state.selectvalue, till_label:this.state.till_label};
+        console.log("TPE ***",tpe)
+          const newTpe={...tpe,status:this.state.selectvalue, till_label:this.state.till_label.toString()};
+          console.log(this.state.till_label);
+          console.log("NEW TPE ***", newTpe);
           fetch(`http://ped-tracker.herokuapp.com/api/devices/${newTpe.id}`,{
             method: 'PUT',
             headers: {
@@ -62,7 +63,7 @@ class ShowForm extends React.Component {
 
                     <Text>Numéro de caisse :</Text>
                     <TextInput
-                      style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+                      style={{height: 40, width:50, borderColor: 'gray', borderWidth: 1}}
                       onChangeText={(till_label) => this.setState({till_label})}
                       value={this.state.till_label}
                     />

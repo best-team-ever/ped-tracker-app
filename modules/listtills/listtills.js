@@ -7,12 +7,14 @@ import { Icon, Form, Picker } from "native-base";
 import PageHeader from "./../pageheader/pageheader.js";
 import { SearchBar, ListItem, Button } from 'react-native-elements';
 import { createStackNavigator } from 'react-navigation';
+import { dataped } from "./../data/data.js";
 import axios from "axios";
+import moment from "moment";
 import {Select, Option} from "react-native-chooser";
 // import fetch from "fetch";
 
 
-class ShowTpe extends React.Component {
+class ShowTill extends React.Component {
   constructor(props){
     super(props)
     this.state = {
@@ -32,14 +34,12 @@ class ShowTpe extends React.Component {
     this.setState({selectvalue: value.itemValue});
   }
 
-  updateTpe(tpe) {
-    if(this.state.till_label) {
-        till=""
-    } else {
-        till=this.state.till_label;
-    }
-      const newTpe={...tpe,status:this.state.selectvalue, till_label:this.state.till_label};
-      console.log(this.state.till_label);
+  confirmTpe(tpe) {
+      const currentDate = new Date();
+      const stringDate = moment().format();
+      const newTpe={...tpe,last_inspection_date: stringDate};
+      console.log("*** TPE ",tpe)
+      console.log("*** NEW TPE ",newTpe)
       fetch(`http://ped-tracker.herokuapp.com/api/devices/${newTpe.id}`,{
         method: 'PUT',
         headers: {
@@ -48,7 +48,7 @@ class ShowTpe extends React.Component {
         },
         body: JSON.stringify({device: newTpe, userId: "1d72faa0-318a-44c1-a15a-87f583094d7f"}),
       })
-      .then(this.setModalVisible(!this.state.modalVisible));
+      .then(this.props.updatereduxtpe(newTpe))
 
     }
 
@@ -84,77 +84,84 @@ class ShowTpe extends React.Component {
   }
 
   render() {
-    return (
-      <View style={styles.container}>
-        <TouchableHighlight
-          style={styles.tpe}
-          onPress={()=>this.toggledetail()}
-          underlayColor="rgba(253,138,94,0.2)"
-          >
-            <View style={styles.titleline}>
-            <View style={styles.titleleft}>
-              <Text style={styles.titlesn}>{this.props.tpe.serial_nr}</Text>
-              {this.rendertillname()}
-
-            </View>
-            <Text>
-              {this.props.tpe.status}
-            </Text>
-            <Text>
-               {this.renderStatusIcon(this.props.tpe.status)}
-            </Text>
-          </View>
-          </TouchableHighlight>
+    if (this.props.tpe.till_label) {
+      return (
+        <View style={styles.container}>
           <TouchableHighlight
-            style={(this.state.viewdetail) ? styles.view : styles.hide}
+            style={styles.tpe}
+            onPress={()=>this.toggledetail()}
+            underlayColor="rgba(253,138,94,0.2)"
             >
-              <View>
-              <View style={styles.tpeinfos}>
-                <Text>Modèle : {this.props.tpe.model}</Text>
-                <Text>Marque : {this.props.tpe.brand}</Text>
-                <Text>Caisse associée : {this.props.tpe.till_label}</Text>
-                <Text>Numéro de série : {this.props.tpe.serial_nr}</Text>
-                <Text>Dernier relevé : {this.props.tpe.last_inspection_date}</Text>
-                <Text>Dernière MAJ : {this.props.tpe.updatedAt}</Text>
+              <View style={styles.titleline}>
+              <View style={styles.titleleft}>
+                {this.rendertillname()}
+                <Text style={styles.titlesn}>{this.props.tpe.serial_nr}</Text>
+
+
               </View>
-              <View style={styles.buttoncontain}>
-                <Button
-                  light
-                  icon={{name: 'edit', type: 'font-awesome'}}
-                  buttonStyle={{
-                    backgroundColor: "rgba(72, 167,74, 1)",
-                    borderColor: "transparent",
-                    borderWidth: 0,
-                    borderRadius: 5,
-                    width: 120,
-                    height: 40,
-                    margin: 5,
-                  }}
-                  title='Modifier'
-                  // onPress={() => this.setModalVisible(true)}
-                  onPress={() => this.props.navigation.navigate('modiftpe',{tpe : this.props.tpe})}
-                />
-                <Button
-                  light
-                  icon={{name: 'history', type: 'font-awesome'}}
-                  buttonStyle={{
-                    backgroundColor: "#564321",
-                    borderColor: "transparent",
-                    borderWidth: 0,
-                    borderRadius: 5,
-                    width: 100,
-                    height: 40,
-                    margin: 5,
-                  }}
-                  title='Historique'
-                  onPress={() => this.props.navigation.navigate('histotpe',{tpe : this.props.tpe})}
-                />
-              </View>
+              <Text>
+                {this.props.tpe.status}
+              </Text>
+              <Text>
+                 {this.renderStatusIcon(this.props.tpe.status)}
+              </Text>
             </View>
             </TouchableHighlight>
+            <TouchableHighlight
+              style={(this.state.viewdetail) ? styles.view : styles.hide}
+              >
+                <View>
+                <View style={styles.tpeinfos}>
+                  <Text>Modèle du TPE : {this.props.tpe.model}</Text>
+                  <Text>Marque : {this.props.tpe.brand}</Text>
+                  <Text>Numéro de série : {this.props.tpe.serial_nr}</Text>
+                  <Text>Dernière inspection : {this.props.tpe.last_inspection_date}</Text>
+                </View>
+                <View style={styles.buttoncontain}>
+                  <Button
+                    light
+                    icon={{name: 'edit', type: 'font-awesome'}}
+                    buttonStyle={{
+                      backgroundColor: "rgba(72, 167,74, 1)",
+                      borderColor: "transparent",
+                      borderWidth: 0,
+                      borderRadius: 5,
+                      width: 120,
+                      height: 40,
+                      margin: 5,
+                    }}
+                    title='Modifier'
+                    // onPress={() => this.setModalVisible(true)}
+                    onPress={() => this.props.navigation.navigate('modiftpe',{tpe : this.props.tpe})}
+                  />
+                  <Button
+                    light
+                    icon={{name: 'check-circle-o', type: 'font-awesome'}}
+                    buttonStyle={{
+                      backgroundColor: "rgba(72, 167,74, 1)",
+                      borderColor: "transparent",
+                      borderWidth: 0,
+                      borderRadius: 5,
+                      width: 150,
+                      height: 40,
+                      margin: 5,
+                    }}
+                    title='Confirmer TPE'
+                    // onPress={() => this.setModalVisible(true)}
+                    onPress={() => this.confirmTpe(this.props.tpe)}
+                  />
+                </View>
+              </View>
+              </TouchableHighlight>
 
-      </View>
-    )
+        </View>
+      )
+    }
+      else{
+        return (
+          <View></View>
+        )
+      }
   }
 }
 
@@ -170,14 +177,16 @@ class Tpe extends React.Component {
   }
 
   sortList(list) {
-    const sorted = list.sort( (a, b) => (a.serial_nr.localeCompare(b.serial_nr)));
+    const sorted = list.sort( (a, b) => (a.till_label.localeCompare(b.till_label)));
+    // console.log("*** LIST :", list);
+    // console.log("*** SORTEDLIST :", sorted)
     return sorted
   }
 
   componentDidMount(){
-    axios.get(`http://ped-tracker.herokuapp.com/api/locations/${this.props.storeUser}/devices`)
+    axios.get(`https://ped-tracker.herokuapp.com/api/locations/${this.props.storeUser}/devices`)
     .then((response) => this.props.setInitialState(response.data))
-    .then(() => this.setState({listDevices: this.sortList(this.props.listDevices), listDevicesSrc:this.sortList(this.props.listDevices)}))
+    .then(() => this.setState({listDevices: this.sortList(this.props.listDevices), listDevicesSrc: this.sortList(this.props.listDevices)}))
     // .then((response) => this.setState({listDevices: response.data, listDevicesSrc: response.data}))
   }
 
@@ -191,26 +200,15 @@ class Tpe extends React.Component {
     return(
       <View style={{flex:1}}>
         <PageHeader navigation={this.props.navigation}/>
-        <SearchBar
-          lightTheme
-          round
-          searchIcon={{ size: 28 }}
-          placeholder='Rechercher un TPE'
-          onChangeText={(value) => this.setState({filtervalue : value})}
-          onClear={(value) => this.setState({filtervalue : value})}
-          style={{paddingBottom:10}}
-          />
-          <Text style={{margin:10}}>Liste des TPE du magasin</Text>
+        <Text style={{margin:10}}>Etat des caisses</Text>
         <ScrollView>
-          {/* {this.updateState()} */}
           {
-
             this.props.listDevices.filter(Tpe => Tpe.serial_nr.includes(this.state.filtervalue)).map((tpe,i) => (
-            <ShowTpe key={i} tpe={tpe} navigation={this.props.navigation}/>
+            <ShowTillConnected key={i} tpe={tpe} navigation={this.props.navigation}/>
             )
           )
           }
-</ScrollView>
+        </ScrollView>
       </View>
 
     )
@@ -223,6 +221,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
+    flexWrap:"wrap",
     justifyContent: 'flex-end',
   },
   titleline :{
@@ -235,12 +234,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   titlesn :{
-    fontWeight:"bold",
-  },
-  titletill :{
     fontWeight:"normal",
     fontSize:10,
     color:"#666666",
+  },
+  titletill :{
+    fontWeight:"bold",
   },
   tpe :{
     backgroundColor: "#FFFFFF",
@@ -287,7 +286,7 @@ const styles = StyleSheet.create({
     flexDirection:"row",
     justifyContent: "space-around",
     padding:7,
-    width:"80%",
+    width:"90%",
     marginTop:9,
   },
   picker :{
@@ -305,4 +304,5 @@ const styles = StyleSheet.create({
   }
 });
 
+let ShowTillConnected=connect(null, mapDispatchToProps)(ShowTill);
 export default connect(mapStateToProps, mapDispatchToProps)(Tpe);

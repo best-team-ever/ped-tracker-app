@@ -117,7 +117,8 @@ class AccordionTills extends Component {
   componentDidMount(){
   // console.log(this.props.match.params.categoryId);
   // axios.get(`http://192.168.38.58:8000/api/devices`)
-  axios.get(`https://ped-tracker.herokuapp.com/api/devices`)
+  // axios.get(`http://ped-tracker.herokuapp.com/api/devices`)
+  axios.get(`https://ped-tracker.herokuapp.com/api/locations/${this.props.storeUser}/devices`)
   //.then((response) => console.log(response))
     .then((response) => this.props.initialState(response.data))
   // .then((response) => this.setState({listDevices: response.data}))

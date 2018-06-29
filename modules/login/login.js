@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import {mapStateToProps} from "./../../store/selector.js";
 import {mapDispatchToProps} from "./../../store/handlers.js";
 import Expo from 'expo';
+import axios from "axios";
 
 class login extends React.Component {
   constructor(props) {
@@ -13,6 +14,12 @@ class login extends React.Component {
       connected:"no",
     }
   }
+
+  getUserList() {
+    return axios.get(`http://ped-tracker.herokuapp.com/api/users`)
+    // .then((response) => console.log("******* USER : ",response.data))
+  }
+
 
   signInWithGoogleAsync = async () => {
     try {
@@ -23,7 +30,8 @@ class login extends React.Component {
       })
 
       if (result.type === 'success') {
-        this.props.connected(result.user.email);
+        this.getUserList().then((response) => this.props.connected(result.user.email, response.data))
+        // this.props.connected(result.user.email);
 
         return result
       }
